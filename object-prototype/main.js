@@ -1,3 +1,4 @@
+"use strict";
 function initCheckBirthday() {
     const birthday = document.getElementById('birthday').value;
 
