@@ -7,7 +7,11 @@ function setDaylyRhythm(wakeUpTime, bedTime) {
 
 	setInterval(() => {
 		const now = new Date();
-		const curTime = now.getHours() + ':' + now.getMinutes();
+		let h = now.getHours();
+		let m = now.getMinutes();
+		(h < 10) ? h = '0' + h: h;
+		(m < 10) ? m = '0' + m: m;
+		const curTime = h + ':' + m;
 		wakeUp(curTime);
 		bed(curTime);
 	}, 1000);
@@ -26,4 +30,4 @@ checkTime = setAlarm('07:00', goodMorning);
 checkTime('07:30');
 checkTime('07:00');
 
-setDaylyRhythm('12:40','12:42');
+setDaylyRhythm('21:05','21:06');
