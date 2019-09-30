@@ -1,72 +1,48 @@
 'use strict';
 function compareArrays(arr1, arr2){
-  if (arr1.length === arr2.length) {
-
-    if (arr1.every(item => arr1.indexOf(item) === arr2.indexOf(item))) {
-      //console.log(`${arr1} and ${arr2} равны - true`);
-      return true;
-    } else {
-      let str = arr1.every(item => arr2.includes(item)) ? ', разные индексы, хотя и одинаковые значения' : ', разные значения';
-      //console.log(`${arr1} and ${arr2} равны - false ${str}`);
-      return false;
-    }
-  }
-  //console.log(`${arr1} and ${arr2} равны - false , разные значения`);
-  return false;
+  return (arr1.length === arr2.length) && (arr1.every(item => arr1.indexOf(item) === arr2.indexOf(item)));
 }
 
-compareArrays([8, 9], [6]); // false, разные значения
-compareArrays([8, 9, 5, 4], [8, 9, 5, 4, 8, 3, 5]); // false, разные значения
-compareArrays([9, 2, 4, 8, 2], [9, 2, 4]); // false, разные значения
-compareArrays([1, 2, 3], [2, 3, 1]); // false, разные индексы, хотя и одинаковые значения
-compareArrays([8, 1, 2], [8, 1, 2]); // true
-// function sum () {
-//   return Array.from(arguments).reduce((a, b) => a + b);
-// }
+const sum = (a) => {
+  let sums = 0;
+  for(let i of a) {
+    sums += i;
+  }
+  return sums;
+}
 
 function memoize(fn, limit) {
   let results = [];
   return (...argument) => {
-        let searchMemo = false;
-if(results.length !== 0) {
-    searchMemo = results.some(itemR => {
-      if(argument.every((itemA, index) =>  compareArrays(itemA, itemR.args[index]))) {
-        console.log(`From memoize ${itemR.result}`);
-        return true;
-      }
-    }
-    );
-}
+    const searchMemo = results.find(itemR => compareArrays(itemR.args, Array.from(argument)));
 
-    if (!searchMemo) {
-      let result = fn(argument[0], argument[1]);
-      results.push({args: argument, result: result});
-      console.log(`From new ${result}`);
-      
-      console.log(results.length);
-      if (results.length > limit) {
-        results.shift();
-        console.log('shift');
-      }
+    if (searchMemo) {
+      return `From memo - ${searchMemo.result}`;
+    } else {
+      let result = fn(argument);
+      results.push({
+        args: Array.from(argument),
+        result: result
+      });
+      if (results.length > limit) results.shift();
+      return `New - ${result}`;
     }
   }
 }
 
-let ca = memoize(compareArrays,10);
+let ca = memoize(sum, 10);
 
-console.log(ca([8, 1, 2], [8, 1, 2]));
-console.log(ca([8, 1, 2], [8, 1, 3]));
-console.log(ca([8, 1, 2], [8, 1, 13]));
-console.log(ca([8, 1, 2], [8, 1, 12]));
-console.log(ca([8, 1, 2], [8, 1, 11]));
-console.log(ca([8, 1, 2], [8, 1, 10]));
-console.log(ca([8, 1, 2], [8, 1, 9]));
-console.log(ca([8, 1, 2], [8, 1, 8]));
-console.log(ca([8, 1, 2], [8, 1, 7]));
-console.log(ca([8, 1, 2], [8, 1, 6]));
-console.log(ca([8, 1, 2], [8, 1, 5]));
-console.log(ca([8, 1, 2], [8, 1, 4]));
-console.log(ca([8, 1, 2], [8, 1, 1]));
-console.log(ca([8, 1, 2], [8, 1, 3]));
-console.log(ca([8, 1, 2], [8, 1, 23]));
-console.log(ca([8, 1, 2], [8, 1, 32]));
+console.log(ca(1, 2, 3));
+console.log(ca(2, 2, 3));
+console.log(ca(1, 2, 3));
+console.log(ca(2, 2, 3));
+console.log(ca(3, 2, 3));
+console.log(ca(4, 2, 3));
+console.log(ca(5, 2, 3));
+console.log(ca(6, 2, 3));
+console.log(ca(7, 2, 3));
+console.log(ca(8, 2, 3));
+console.log(ca(9, 2, 3));
+console.log(ca(10, 2, 3));
+console.log(ca(11, 2, 3));
+console.log(ca(12, 2, 3));
