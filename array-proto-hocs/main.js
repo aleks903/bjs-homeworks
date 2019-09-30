@@ -44,7 +44,7 @@ if(results.length !== 0) {
       console.log(`From new ${result}`);
       
       console.log(results.length);
-      if (results.length > 10) {
+      if (results.length > limit) {
         results.shift();
         console.log('shift');
       }
@@ -52,7 +52,7 @@ if(results.length !== 0) {
   }
 }
 
-let ca = memoize(compareArrays,2);
+let ca = memoize(compareArrays,10);
 
 console.log(ca([8, 1, 2], [8, 1, 2]));
 console.log(ca([8, 1, 2], [8, 1, 3]));
